@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#eaf4ff">
+  <meta name="description" content="Shiroko Hub · 蔚蓝档案同好综合站初版">
+  <title>Shiroko Hub · 蔚蓝档案综合站</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="返回首页"><span class="brand-mark">S</span><span><b>SHIROKO HUB</b><small>BLUE ARCHIVE FAN HUB</small></span></a>
+    <nav class="desktop-nav" aria-label="主导航"><a href="#students">学生档案</a><a href="#toolbox">互动工具</a><a href="#favorites">我的收藏</a><a href="#about">关于本站</a></nav>
+    <button class="icon-button" id="themeToggle" aria-label="切换主题" title="切换主题">☾</button>
+  </header>
+  <main id="home">
+    <section class="hero panel">
+      <div class="hero-copy"><div class="eyebrow"><span class="pulse"></span> SCHALE SYSTEM · ONLINE</div><h1>欢迎来到<br><span>基沃托斯。</span></h1><p>学生档案、灵感工具与个人收藏。属于老师的轻量互动空间，现在开始探索。</p><div class="hero-actions"><a class="button primary" href="#students">探索学生档案 <span>↗</span></a><a class="button secondary" href="#toolbox">打开互动工具</a></div><div class="hero-meta"><span><i></i> FAN-MADE PROJECT</span><span>VERSION 0.1.0</span></div></div>
+      <div class="hero-art" aria-label="蓝白色科技装饰"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="hero-core"><span class="core-symbol">✦</span><b>SCH</b><small>TACTICAL<br>INTERFACE</small></div><span class="float-chip chip-one">SYSTEM READY</span><span class="float-chip chip-two">KIVOTOS / 01</span><span class="decor-cross">＋</span><span class="decor-dot dot-one"></span><span class="decor-dot dot-two"></span></div>
+    </section>
+    <section class="stats-grid" aria-label="网站状态"><div class="stat panel"><span class="stat-icon">◈</span><div><b id="studentCount">09</b><small>示例学生档案</small></div></div><div class="stat panel"><span class="stat-icon">♡</span><div><b id="favoriteCount">00</b><small>我的收藏</small></div></div><div class="stat panel"><span class="stat-icon">✧</span><div><b>V1</b><small>初版体验阶段</small></div></div></section>
+    <section class="section" id="students"><div class="section-heading"><div><div class="eyebrow">STUDENT DATABASE</div><h2>学生档案 <span class="heading-en">/ STUDENTS</span></h2><p>搜索名字，按学园筛选，打开档案了解学生。</p></div><span class="section-number">01 — 04</span></div>
+      <div class="filter-bar"><label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="搜索学生名称或学园…" autocomplete="off"><kbd>⌘ K</kbd></label><select id="schoolFilter" aria-label="按学园筛选"><option value="all">全部学园</option><option>阿拜多斯</option><option>千年科学学园</option><option>格黑娜学园</option><option>三一综合学园</option><option>夏莱</option></select></div>
+      <div class="student-grid" id="studentGrid"></div><div class="empty-state hidden" id="emptyState">没有找到符合条件的学生，再试试其他关键词吧。</div>
+    </section>
+    <section class="section" id="toolbox"><div class="section-heading"><div><div class="eyebrow">INTERACTIVE LAB</div><h2>互动工具箱 <span class="heading-en">/ TOOLBOX</span></h2><p>一点小小的互动，让网站不只是资料列表。</p></div><span class="section-number">02 — 04</span></div>
+      <div class="tools-grid"><article class="tool-card panel"><div class="tool-top"><span class="tool-icon">🎲</span><span class="tag">RANDOM</span></div><h3>今日随机学生</h3><p>从当前档案中随机遇见一位学生。</p><div class="random-result" id="randomResult"><span class="result-avatar">?</span><span><b>等待抽选</b><small>点击按钮开始</small></span></div><button class="button primary full" id="randomBtn">随机遇见一位学生 ↗</button></article>
+      <article class="tool-card panel"><div class="tool-top"><span class="tool-icon">📝</span><span class="tag">LOCAL NOTE</span></div><h3>老师的备忘录</h3><p>记录想法、待办事项或下次要看的攻略。</p><textarea id="noteInput" rows="4" maxlength="1500" placeholder="写下今天的计划……"></textarea><div class="note-footer"><small id="noteStatus">内容保存在当前浏览器</small><button class="button secondary" id="clearNote">清空</button></div></article></div>
+    </section>
+    <section class="section" id="favorites"><div class="section-heading"><div><div class="eyebrow">YOUR COLLECTION</div><h2>我的收藏 <span class="heading-en">/ FAVORITES</span></h2><p>喜欢的学生会出现在这里，仅保存在当前浏览器。</p></div><span class="section-number">03 — 04</span></div><div class="favorite-list panel" id="favoriteList"><div class="favorite-empty">♡<b>还没有收藏</b><small>在学生档案卡片上点亮爱心，即可添加收藏。</small></div></div></section>
+    <section class="about panel" id="about"><div class="about-mark">S.</div><div><div class="eyebrow">ABOUT THIS PROJECT</div><h2>一个正在成长的同好空间。</h2><p>Shiroko Hub 是非官方粉丝项目，旨在探索更好用、更有互动感的《蔚蓝档案》综合网站。当前版本使用示例档案与浏览器本地存储，暂不提供实时游戏数据或账号系统。</p><small>非官方粉丝作品，与 NEXON / Yostar 无隶属关系。角色及相关名称归其权利人所有。</small></div></section>
+    <footer><a class="brand footer-brand" href="#home"><span class="brand-mark">S</span><span><b>SHIROKO HUB</b><small>MADE FOR SENSEI</small></span></a><span>V1.0 PREVIEW · BUILT WITH CURIOSITY</span><a href="#home">返回顶部 ↑</a></footer>
+  </main>
+  <nav class="mobile-nav" aria-label="手机导航"><a class="active" href="#home">⌂<small>首页</small></a><a href="#students">◈<small>学生</small></a><a href="#toolbox">✧<small>工具</small></a><a href="#favorites">♡<small>收藏</small></a></nav>
+  <div class="modal hidden" id="studentModal" role="dialog" aria-modal="true" aria-labelledby="modalName"><div class="modal-backdrop" data-close="true"></div><article class="modal-card"><button class="modal-close" id="modalClose" aria-label="关闭">×</button><div class="modal-banner" id="modalBanner"><span id="modalInitial">白</span></div><div class="modal-content"><span class="tag" id="modalSchool">阿拜多斯</span><h2 id="modalName">砂狼白子</h2><p class="modal-role" id="modalRole">对策委员会</p><p id="modalBio"></p><div class="modal-actions"><button class="button primary" id="modalFavorite">♡ 加入收藏</button><button class="button secondary" id="modalDone">关闭档案</button></div></div></article></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
