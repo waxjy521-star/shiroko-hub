@@ -1,0 +1,39 @@
+const students = [
+  {id:'shiroko',name:'砂狼白子',school:'阿拜多斯',role:'对策委员会 / 骑行爱好者',initial:'白',colors:['#e2f5ff','#8ccaff'],bio:'阿拜多斯高中的学生，对运动和骑行充满热情。安静而认真，总会用自己的方式帮助同伴。'},
+  {id:'hoshino',name:'小鸟游星野',school:'阿拜多斯',role:'对策委员会 / 前辈',initial:'星',colors:['#ffe7cf','#f5bd8c'],bio:'看起来有些懒散的阿拜多斯前辈，关键时刻却十分可靠。总是把伙伴们的安全放在心上。'},
+  {id:'serika',name:'黑见芹香',school:'阿拜多斯',role:'对策委员会 / 认真派',initial:'芹',colors:['#ffe3e7','#ffb5c6'],bio:'嘴上不饶人，内心却很重视同伴。为了让学校继续走下去，一直努力打工与行动。'},
+  {id:'arona',name:'阿罗娜',school:'夏莱',role:'夏莱事务辅助',initial:'阿',colors:['#dff7ff','#91d8ff'],bio:'来自夏莱的活泼辅助伙伴，负责协助老师处理事务。总是带着满满的好奇心。'},
+  {id:'yuuka',name:'早濑优香',school:'千年科学学园',role:'学生会 / 会计',initial:'优',colors:['#e5e6ff','#aaaefa'],bio:'擅长计算与管理的优等生，对数字格外敏锐。做事认真，也很关心身边的人。'},
+  {id:'hina',name:'空崎日奈',school:'格黑娜学园',role:'风纪委员会 / 委员长',initial:'日',colors:['#e9e5ff','#b4a5fa'],bio:'格黑娜风纪委员会的委员长，实力强大而责任心十足。工作之外也有温柔的一面。'},
+  {id:'azusa',name:'白洲梓',school:'三一综合学园',role:'补习部 / 战术专家',initial:'梓',colors:['#e5f5ff','#a6cfff'],bio:'沉默寡言、行动果断的学生，习惯认真完成自己的任务，并逐渐学习信任伙伴。'},
+  {id:'noa',name:'生盐诺亚',school:'千年科学学园',role:'研讨会 / 书记',initial:'诺',colors:['#e4f7ed','#9bd9bb'],bio:'记忆力出色、观察细致的研讨会书记，擅长整理信息，也喜欢观察人与人之间的互动。'},
+  {id:'mutsuki',name:'浅黄睦月',school:'格黑娜学园',role:'便利屋68 / 气氛担当',initial:'睦',colors:['#ffe5e8','#ffa7b8'],bio:'总是笑嘻嘻的便利屋成员，喜欢开玩笑和制造热闹，但也十分重视自己的伙伴。'}
+];
+const $ = s => document.querySelector(s);
+const grid = $('#studentGrid'), searchInput = $('#searchInput'), schoolFilter = $('#schoolFilter');
+let favorites = readStore('shiroko-favorites', []);
+let activeStudent = null;
+let toastTimer;
+function readStore(key, fallback){ try { const v = localStorage.getItem(key); return v === null ? fallback : JSON.parse(v); } catch { return fallback; } }
+function writeStore(key, value){ try { localStorage.setItem(key, JSON.stringify(value)); } catch { showToast('浏览器未允许保存本地数据'); } }
+function safeText(value){ return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function avatarStyle(s){ return `--avatar-a:${s.colors[0]};--avatar-b:${s.colors[1]}`; }
+function visibleStudents(){ const q=searchInput.value.trim().toLowerCase(), school=schoolFilter.value; return students.filter(s => (school==='all'||s.school===school) && (!q || `${s.name} ${s.school} ${s.role}`.toLowerCase().includes(q))); }
+function renderStudents(){ const list=visibleStudents(); grid.innerHTML=list.map(s=>`<article class="student-card" data-student="${s.id}" tabindex="0" role="button" aria-label="打开${s.name}档案"><div class="avatar" style="${avatarStyle(s)}">${s.initial}</div><div class="student-info"><h3>${s.name}</h3><p>${s.role}</p><span class="student-school">${s.school}</span></div><button class="favorite-button ${favorites.includes(s.id)?'active':''}" data-favorite="${s.id}" aria-label="${favorites.includes(s.id)?'取消收藏':'收藏'}${s.name}" title="收藏">${favorites.includes(s.id)?'♥':'♡'}</button></article>`).join(''); $('#emptyState').classList.toggle('hidden',list.length!==0); $('#studentCount').textContent=String(students.length).padStart(2,'0'); }
+function renderFavorites(){ const list=students.filter(s=>favorites.includes(s.id)); $('#favoriteCount').textContent=String(list.length).padStart(2,'0'); $('#favoriteList').innerHTML=list.length?`<div class="favorite-items">${list.map(s=>`<div class="favorite-chip"><span class="mini-avatar" style="${avatarStyle(s)}">${s.initial}</span><span>${s.name}</span><button data-remove="${s.id}" aria-label="移除${s.name}" title="移除收藏">×</button></div>`).join('')}</div>`:`<div class="favorite-empty"><span>♡</span><b>还没有收藏</b><small>在学生档案卡片上点亮爱心，即可添加收藏。</small></div>`; }
+function toggleFavorite(id){ favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id]; writeStore('shiroko-favorites',favorites); renderStudents();renderFavorites(); if(activeStudent) updateModalFavorite(); const s=students.find(x=>x.id===id); showToast(favorites.includes(id)?`已收藏 ${s.name}`:`已取消收藏 ${s.name}`); }
+function openStudent(id){ const s=students.find(x=>x.id===id); if(!s)return; activeStudent=s; $('#modalInitial').textContent=s.initial; $('#modalBanner').style.background=`linear-gradient(135deg,${s.colors[0]},${s.colors[1]})`; $('#modalName').textContent=s.name; $('#modalSchool').textContent=s.school; $('#modalRole').textContent=s.role; $('#modalBio').textContent=s.bio; updateModalFavorite(); $('#studentModal').classList.remove('hidden'); document.body.style.overflow='hidden'; $('#modalClose').focus(); }
+function updateModalFavorite(){ if(!activeStudent)return; const on=favorites.includes(activeStudent.id); $('#modalFavorite').textContent=on?'♥ 已加入收藏':'♡ 加入收藏'; }
+function closeModal(){ $('#studentModal').classList.add('hidden');document.body.style.overflow='';activeStudent=null; }
+function showToast(message){ const el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2200); }
+function pickRandom(){ const list=visibleStudents();if(!list.length){showToast('当前筛选没有学生可抽选');return;} const s=list[Math.floor(Math.random()*list.length)];$('#randomResult').innerHTML=`<span class="result-avatar" style="${avatarStyle(s)}">${s.initial}</span><span><b>${s.name}</b><small>${s.school} · ${s.role}</small></span>`; }
+searchInput.addEventListener('input',renderStudents);schoolFilter.addEventListener('change',renderStudents);
+grid.addEventListener('click',e=>{const fav=e.target.closest('[data-favorite]');if(fav){e.stopPropagation();toggleFavorite(fav.dataset.favorite);return;}const card=e.target.closest('[data-student]');if(card)openStudent(card.dataset.student);});
+grid.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-student]')){e.preventDefault();openStudent(e.target.dataset.student);}});
+$('#favoriteList').addEventListener('click',e=>{const b=e.target.closest('[data-remove]');if(b)toggleFavorite(b.dataset.remove);});
+$('#randomBtn').addEventListener('click',pickRandom);$('#modalClose').addEventListener('click',closeModal);$('#modalDone').addEventListener('click',closeModal);$('#studentModal').addEventListener('click',e=>{if(e.target.dataset.close)closeModal();});$('#modalFavorite').addEventListener('click',()=>{if(activeStudent)toggleFavorite(activeStudent.id);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();searchInput.focus();}});
+const noteInput=$('#noteInput');noteInput.value=readStore('shiroko-note','');let noteSaveTimer;noteInput.addEventListener('input',()=>{ $('#noteStatus').textContent='正在保存…';clearTimeout(noteSaveTimer);noteSaveTimer=setTimeout(()=>{writeStore('shiroko-note',noteInput.value);$('#noteStatus').textContent='已保存在当前浏览器';},350);});$('#clearNote').addEventListener('click',()=>{if(!noteInput.value)return;noteInput.value='';writeStore('shiroko-note','');$('#noteStatus').textContent='备忘录已清空';showToast('备忘录已清空');});
+const themeToggle=$('#themeToggle');function setTheme(dark){document.body.classList.toggle('dark',dark);themeToggle.textContent=dark?'☀':'☾';themeToggle.setAttribute('aria-label',dark?'切换浅色主题':'切换深色主题');try{localStorage.setItem('shiroko-theme',dark?'dark':'light');}catch{}}let savedTheme='light';try{savedTheme=localStorage.getItem('shiroko-theme')||'light';}catch{}setTheme(savedTheme==='dark');themeToggle.addEventListener('click',()=>setTheme(!document.body.classList.contains('dark')));
+const navLinks=[...document.querySelectorAll('.mobile-nav a')];navLinks.forEach(a=>a.addEventListener('click',()=>{navLinks.forEach(n=>n.classList.remove('active'));a.classList.add('active');}));
+renderStudents();renderFavorites();
