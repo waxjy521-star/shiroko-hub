@@ -3,39 +3,128 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#eaf4ff">
-  <meta name="description" content="Shiroko Hub · 蔚蓝档案同好综合站初版">
-  <title>Shiroko Hub · 蔚蓝档案综合站</title>
+  <meta name="theme-color" content="#eef8ff">
+  <title>KIVOTOS HUB · 基沃托斯线上世界</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
-  <header class="topbar">
-    <a class="brand" href="#home" aria-label="返回首页"><span class="brand-mark">S</span><span><b>SHIROKO HUB</b><small>BLUE ARCHIVE FAN HUB</small></span></a>
-    <nav class="desktop-nav" aria-label="主导航"><a href="#students">学生档案</a><a href="#toolbox">互动工具</a><a href="#favorites">我的收藏</a><a href="#about">关于本站</a></nav>
-    <button class="icon-button" id="themeToggle" aria-label="切换主题" title="切换主题">☾</button>
-  </header>
-  <main id="home">
-    <section class="hero panel">
-      <div class="hero-copy"><div class="eyebrow"><span class="pulse"></span> SCHALE SYSTEM · ONLINE</div><h1>欢迎来到<br><span>基沃托斯。</span></h1><p>学生档案、灵感工具与个人收藏。属于老师的轻量互动空间，现在开始探索。</p><div class="hero-actions"><a class="button primary" href="#students">探索学生档案 <span>↗</span></a><a class="button secondary" href="#toolbox">打开互动工具</a></div><div class="hero-meta"><span><i></i> FAN-MADE PROJECT</span><span>VERSION 0.1.0</span></div></div>
-      <div class="hero-art" aria-label="蓝白色科技装饰"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="hero-core"><span class="core-symbol">✦</span><b>SCH</b><small>TACTICAL<br>INTERFACE</small></div><span class="float-chip chip-one">SYSTEM READY</span><span class="float-chip chip-two">KIVOTOS / 01</span><span class="decor-cross">＋</span><span class="decor-dot dot-one"></span><span class="decor-dot dot-two"></span></div>
-    </section>
-    <section class="stats-grid" aria-label="网站状态"><div class="stat panel"><span class="stat-icon">◈</span><div><b id="studentCount">09</b><small>示例学生档案</small></div></div><div class="stat panel"><span class="stat-icon">♡</span><div><b id="favoriteCount">00</b><small>我的收藏</small></div></div><div class="stat panel"><span class="stat-icon">✧</span><div><b>V1</b><small>初版体验阶段</small></div></div></section>
-    <section class="section" id="students"><div class="section-heading"><div><div class="eyebrow">STUDENT DATABASE</div><h2>学生档案 <span class="heading-en">/ STUDENTS</span></h2><p>搜索名字，按学园筛选，打开档案了解学生。</p></div><span class="section-number">01 — 04</span></div>
-      <div class="filter-bar"><label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="搜索学生名称或学园…" autocomplete="off"><kbd>⌘ K</kbd></label><select id="schoolFilter" aria-label="按学园筛选"><option value="all">全部学园</option><option>阿拜多斯</option><option>千年科学学园</option><option>格黑娜学园</option><option>三一综合学园</option><option>夏莱</option></select></div>
-      <div class="student-grid" id="studentGrid"></div><div class="empty-state hidden" id="emptyState">没有找到符合条件的学生，再试试其他关键词吧。</div>
-    </section>
-    <section class="section" id="toolbox"><div class="section-heading"><div><div class="eyebrow">INTERACTIVE LAB</div><h2>互动工具箱 <span class="heading-en">/ TOOLBOX</span></h2><p>一点小小的互动，让网站不只是资料列表。</p></div><span class="section-number">02 — 04</span></div>
-      <div class="tools-grid"><article class="tool-card panel"><div class="tool-top"><span class="tool-icon">🎲</span><span class="tag">RANDOM</span></div><h3>今日随机学生</h3><p>从当前档案中随机遇见一位学生。</p><div class="random-result" id="randomResult"><span class="result-avatar">?</span><span><b>等待抽选</b><small>点击按钮开始</small></span></div><button class="button primary full" id="randomBtn">随机遇见一位学生 ↗</button></article>
-      <article class="tool-card panel"><div class="tool-top"><span class="tool-icon">📝</span><span class="tag">LOCAL NOTE</span></div><h3>老师的备忘录</h3><p>记录想法、待办事项或下次要看的攻略。</p><textarea id="noteInput" rows="4" maxlength="1500" placeholder="写下今天的计划……"></textarea><div class="note-footer"><small id="noteStatus">内容保存在当前浏览器</small><button class="button secondary" id="clearNote">清空</button></div></article></div>
-    </section>
-    <section class="section" id="favorites"><div class="section-heading"><div><div class="eyebrow">YOUR COLLECTION</div><h2>我的收藏 <span class="heading-en">/ FAVORITES</span></h2><p>喜欢的学生会出现在这里，仅保存在当前浏览器。</p></div><span class="section-number">03 — 04</span></div><div class="favorite-list panel" id="favoriteList"><div class="favorite-empty">♡<b>还没有收藏</b><small>在学生档案卡片上点亮爱心，即可添加收藏。</small></div></div></section>
-    <section class="about panel" id="about"><div class="about-mark">S.</div><div><div class="eyebrow">ABOUT THIS PROJECT</div><h2>一个正在成长的同好空间。</h2><p>Shiroko Hub 是非官方粉丝项目，旨在探索更好用、更有互动感的《蔚蓝档案》综合网站。当前版本使用示例档案与浏览器本地存储，暂不提供实时游戏数据或账号系统。</p><small>非官方粉丝作品，与 NEXON / Yostar 无隶属关系。角色及相关名称归其权利人所有。</small></div></section>
-    <footer><a class="brand footer-brand" href="#home"><span class="brand-mark">S</span><span><b>SHIROKO HUB</b><small>MADE FOR SENSEI</small></span></a><span>V1.0 PREVIEW · BUILT WITH CURIOSITY</span><a href="#home">返回顶部 ↑</a></footer>
-  </main>
-  <nav class="mobile-nav" aria-label="手机导航"><a class="active" href="#home">⌂<small>首页</small></a><a href="#students">◈<small>学生</small></a><a href="#toolbox">✧<small>工具</small></a><a href="#favorites">♡<small>收藏</small></a></nav>
-  <div class="modal hidden" id="studentModal" role="dialog" aria-modal="true" aria-labelledby="modalName"><div class="modal-backdrop" data-close="true"></div><article class="modal-card"><button class="modal-close" id="modalClose" aria-label="关闭">×</button><div class="modal-banner" id="modalBanner"><span id="modalInitial">白</span></div><div class="modal-content"><span class="tag" id="modalSchool">阿拜多斯</span><h2 id="modalName">砂狼白子</h2><p class="modal-role" id="modalRole">对策委员会</p><p id="modalBio"></p><div class="modal-actions"><button class="button primary" id="modalFavorite">♡ 加入收藏</button><button class="button secondary" id="modalDone">关闭档案</button></div></div></article></div>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" data-page="home">
+        <span class="brand-mark">✦</span>
+        <span><b>KIVOTOS HUB</b><small>基沃托斯线上世界</small></span>
+      </a>
+      <div class="side-label">探索终端</div>
+      <nav class="nav">
+        <button class="nav-item active" data-page="home"><span>⌂</span>首页</button>
+        <button class="nav-item" data-page="students"><span>◉</span>学生档案</button>
+        <button class="nav-item" data-page="map"><span>⌖</span>学园地图</button>
+        <button class="nav-item" data-page="story"><span>▤</span>剧情档案</button>
+        <button class="nav-item" data-page="planner"><span>◈</span>养成规划</button>
+        <button class="nav-item" data-page="collection"><span>♡</span>我的收藏</button>
+        <button class="nav-item" data-page="studio"><span>✎</span>创作空间</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="status-dot"></div><span>终端已就绪</span>
+        <small>FAN PROJECT · V1</small>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="打开导航">☰</button>
+        <div class="crumb"><span>基沃托斯</span><b>/</b><strong id="pageName">首页</strong></div>
+        <label class="searchbox"><span>⌕</span><input id="globalSearch" type="search" placeholder="搜索学生、学园、资料…" autocomplete="off"><kbd>⌘ K</kbd></label>
+        <button class="avatar" id="profileButton" title="个人空间">S</button>
+      </header>
+
+      <section class="page active" id="page-home">
+        <div class="hero">
+          <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="eyebrow-dot"></span> YOUR KIVOTOS CONNECTION</div>
+            <h1>欢迎回到<br><em>基沃托斯</em></h1>
+            <p>探索学园、认识学生、整理资料，<br>记录属于你的每一段故事。</p>
+            <div class="hero-actions">
+              <button class="btn primary" data-goto="students">开始探索 <span>↗</span></button>
+              <button class="btn ghost" data-goto="map">浏览学园地图</button>
+            </div>
+          </div>
+          <div class="hero-art" aria-label="原创校园城市装饰图">
+            <div class="sun"></div><div class="cloud cloud-a"></div><div class="cloud cloud-b"></div>
+            <div class="skyline back"><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="skyline front"><i></i><i></i><i></i><i></i></div>
+            <div class="halo">✧</div>
+            <div class="hero-caption"><span>01 / KIVOTOS</span><span>ACADEMY CITY</span></div>
+          </div>
+          <div class="hero-bottom"><span>● WORLD STATUS: ONLINE</span><span>SCROLL TO EXPLORE ↓</span></div>
+        </div>
+
+        <div class="section-heading">
+          <div><div class="eyebrow">QUICK ACCESS</div><h2>你的探索入口</h2></div>
+          <span class="muted">从这里开始，发现更多可能。</span>
+        </div>
+        <div class="feature-grid">
+          <button class="feature-card card-students" data-goto="students"><span class="feature-icon">◉</span><span class="feature-title">学生档案</span><span class="feature-desc">查找学生、服装形态与资料</span><span class="feature-arrow">↗</span><div class="card-watermark">STUDENT</div></button>
+          <button class="feature-card card-map" data-goto="map"><span class="feature-icon">⌖</span><span class="feature-title">学园地图</span><span class="feature-desc">从各个学园开始漫游</span><span class="feature-arrow">↗</span><div class="card-watermark">SCHOOLS</div></button>
+          <button class="feature-card card-planner" data-goto="planner"><span class="feature-icon">◈</span><span class="feature-title">养成规划</span><span class="feature-desc">记录目标与培养进度</span><span class="feature-arrow">↗</span><div class="card-watermark">PLANNER</div></button>
+          <button class="feature-card card-collection" data-goto="collection"><span class="feature-icon">♡</span><span class="feature-title">个人收藏</span><span class="feature-desc">收藏喜欢的学生与资料</span><span class="feature-arrow">↗</span><div class="card-watermark">MY SPACE</div></button>
+        </div>
+
+        <div class="section-heading lower">
+          <div><div class="eyebrow">YOUR DESK</div><h2>今日终端</h2></div>
+        </div>
+        <div class="dashboard-grid">
+          <article class="panel welcome-panel"><div class="panel-top"><span class="mini-icon">✦</span><span class="pill">WELCOME</span></div><h3>老师，欢迎回来。</h3><p>这是你的基沃托斯个人入口。先从学生档案开始，逐步建立自己的资料库。</p><button class="text-button" data-goto="students">打开学生档案 →</button></article>
+          <article class="panel stats-panel"><div class="panel-top"><span class="mini-icon">▦</span><span class="muted">本地数据</span></div><div class="stat-row"><div><strong id="statStudents">6</strong><small>示例学生</small></div><div><strong id="statSaved">0</strong><small>已收藏</small></div><div><strong id="statGoals">0</strong><small>规划目标</small></div></div><p class="muted tiny">当前版本的数据保存在本设备浏览器中。</p></article>
+        </div>
+        <footer>非官方粉丝项目 · 与游戏官方无隶属关系 · KIVOTOS HUB</footer>
+      </section>
+
+      <section class="page" id="page-students">
+        <div class="page-intro"><div class="eyebrow">STUDENT DATABASE</div><h1>学生档案<span class="heading-mark">✦</span></h1><p>从姓名、学园与定位开始，整理你关心的学生资料。</p></div>
+        <div class="toolbar"><label class="searchbox wide"><span>⌕</span><input id="studentSearch" type="search" placeholder="搜索学生姓名或学园…"></label><select id="schoolFilter"><option value="全部">全部学园</option><option>阿拜多斯</option><option>千年</option><option>三一</option><option>格黑娜</option><option>百鬼夜行</option><option>其他</option></select><select id="roleFilter"><option value="全部">全部定位</option><option>输出</option><option>辅助</option><option>坦克</option><option>治疗</option></select></div>
+        <div class="student-grid" id="studentGrid"></div>
+        <div class="empty-state hidden" id="studentEmpty">没有找到符合条件的学生。试试其他关键词吧。</div>
+        <footer>学生数据为初版示例，后续可继续扩充学生、形态、技能与养成信息。</footer>
+      </section>
+
+      <section class="page" id="page-map">
+        <div class="page-intro"><div class="eyebrow">ACADEMY DISTRICTS</div><h1>学园地图<span class="heading-mark">⌖</span></h1><p>选择一所学园，打开它的探索卡片。此处是可扩展的互动地图原型。</p></div>
+        <div class="map-layout"><div class="map-canvas"><div class="map-grid-lines"></div><div class="map-ring ring-a"></div><div class="map-ring ring-b"></div><div class="map-core">K</div><button class="map-pin pin-a" data-school="阿拜多斯">阿拜多斯</button><button class="map-pin pin-b" data-school="千年">千年</button><button class="map-pin pin-c" data-school="三一">三一</button><button class="map-pin pin-d" data-school="格黑娜">格黑娜</button><button class="map-pin pin-e" data-school="百鬼夜行">百鬼夜行</button><span class="map-coordinate">KIVOTOS / MAP DATA PREVIEW</span></div><aside class="panel map-info" id="mapInfo"><span class="pill">DISTRICT GUIDE</span><h2>选择地图标记</h2><p>点击地图上的学园名称，查看简要介绍。</p><div class="info-rule"></div><small>地图为概念化示意，不代表官方地理设定。</small></aside></div>
+        <footer>地图可以在后续版本扩展为可缩放、可筛选的学园探索界面。</footer>
+      </section>
+
+      <section class="page" id="page-story">
+        <div class="page-intro"><div class="eyebrow">STORY ARCHIVE</div><h1>剧情档案<span class="heading-mark">▤</span></h1><p>整理主线、活动与世界观资料。剧情摘要和章节数据可逐步录入。</p></div>
+        <div class="story-list"><article class="story-card"><div class="story-number">01</div><div><span class="pill">MAIN STORY</span><h3>主线剧情资料库</h3><p>按篇章、章节和阅读进度组织内容。</p></div><span class="coming">待扩充</span></article><article class="story-card"><div class="story-number">02</div><div><span class="pill violet">EVENT</span><h3>活动故事档案</h3><p>整理活动时间、登场学生与相关资料。</p></div><span class="coming">待扩充</span></article><article class="story-card"><div class="story-number">03</div><div><span class="pill green">LORE</span><h3>世界观与设定</h3><p>记录学园、组织、地点与设定关联。</p></div><span class="coming">待扩充</span></article></div>
+        <footer>本页为资料结构原型，后续可加入章节目录、标签、阅读进度与剧透提示。</footer>
+      </section>
+
+      <section class="page" id="page-planner">
+        <div class="page-intro"><div class="eyebrow">GROWTH PLANNER</div><h1>养成规划<span class="heading-mark">◈</span></h1><p>把想培养的目标记录下来，逐项标记进度。数据保存在本地浏览器。</p></div>
+        <form class="planner-form" id="goalForm"><input id="goalInput" maxlength="80" placeholder="例如：整理白子（泳装）的技能资料" required><button class="btn primary" type="submit">＋ 添加目标</button></form>
+        <div class="planner-summary panel"><div><strong id="goalProgress">0%</strong><span>整体完成度</span></div><div class="progress-track"><div id="goalProgressBar"></div></div><small id="goalSummary">还没有规划目标，添加第一项吧。</small></div>
+        <div class="goal-list" id="goalList"></div>
+        <footer>当前为个人规划工具，不连接游戏账号，也不会自动读取游戏内数据。</footer>
+      </section>
+
+      <section class="page" id="page-collection">
+        <div class="page-intro"><div class="eyebrow">PERSONAL COLLECTION</div><h1>我的收藏<span class="heading-mark">♡</span></h1><p>收藏学生卡片，建立自己的基沃托斯小档案。</p></div>
+        <div class="student-grid" id="collectionGrid"></div>
+        <div class="empty-state" id="collectionEmpty"><div class="empty-heart">♡</div><h3>收藏夹还空着</h3><p>在学生档案里点亮心形，就能把喜欢的学生放到这里。</p><button class="btn primary" data-goto="students">去看看学生</button></div>
+        <footer>收藏内容仅保存在当前浏览器，清除浏览器数据后可能丢失。</footer>
+      </section>
+
+      <section class="page" id="page-studio">
+        <div class="page-intro"><div class="eyebrow">CREATOR STUDIO</div><h1>创作空间<span class="heading-mark">✎</span></h1><p>为同人创作、原创角色与灵感记录预留的位置。</p></div>
+        <div class="studio-grid"><button class="studio-tile" data-studio="灵感便笺"><span>✧</span><h3>灵感便笺</h3><p>记录突然出现的点子。</p><b>打开便笺 ↗</b></button><button class="studio-tile" data-studio="原创角色设定"><span>◉</span><h3>原创角色设定</h3><p>整理角色背景、性格与关系。</p><b>创建设定 ↗</b></button><button class="studio-tile" data-studio="作品展示墙"><span>▧</span><h3>作品展示墙</h3><p>为插画、视频与创作成果留位。</p><b>进入展示墙 ↗</b></button></div>
+        <div class="panel note-panel"><label for="studioNote">快速记下一个灵感</label><textarea id="studioNote" rows="4" placeholder="写下你的创作想法……"></textarea><div class="note-actions"><span id="noteStatus">自动保存到本设备</span><button class="btn primary" id="saveNote">保存便笺</button></div></div>
+        <footer>创作空间为个人工具原型，尚未包含公开发布、评论或云端同步。</footer>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
   <script src="app.js"></script>
 </body>
 </html>
