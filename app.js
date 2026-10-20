@@ -1,39 +1,110 @@
-const students = [
-  {id:'shiroko',name:'砂狼白子',school:'阿拜多斯',role:'对策委员会 / 骑行爱好者',initial:'白',colors:['#e2f5ff','#8ccaff'],bio:'阿拜多斯高中的学生，对运动和骑行充满热情。安静而认真，总会用自己的方式帮助同伴。'},
-  {id:'hoshino',name:'小鸟游星野',school:'阿拜多斯',role:'对策委员会 / 前辈',initial:'星',colors:['#ffe7cf','#f5bd8c'],bio:'看起来有些懒散的阿拜多斯前辈，关键时刻却十分可靠。总是把伙伴们的安全放在心上。'},
-  {id:'serika',name:'黑见芹香',school:'阿拜多斯',role:'对策委员会 / 认真派',initial:'芹',colors:['#ffe3e7','#ffb5c6'],bio:'嘴上不饶人，内心却很重视同伴。为了让学校继续走下去，一直努力打工与行动。'},
-  {id:'arona',name:'阿罗娜',school:'夏莱',role:'夏莱事务辅助',initial:'阿',colors:['#dff7ff','#91d8ff'],bio:'来自夏莱的活泼辅助伙伴，负责协助老师处理事务。总是带着满满的好奇心。'},
-  {id:'yuuka',name:'早濑优香',school:'千年科学学园',role:'学生会 / 会计',initial:'优',colors:['#e5e6ff','#aaaefa'],bio:'擅长计算与管理的优等生，对数字格外敏锐。做事认真，也很关心身边的人。'},
-  {id:'hina',name:'空崎日奈',school:'格黑娜学园',role:'风纪委员会 / 委员长',initial:'日',colors:['#e9e5ff','#b4a5fa'],bio:'格黑娜风纪委员会的委员长，实力强大而责任心十足。工作之外也有温柔的一面。'},
-  {id:'azusa',name:'白洲梓',school:'三一综合学园',role:'补习部 / 战术专家',initial:'梓',colors:['#e5f5ff','#a6cfff'],bio:'沉默寡言、行动果断的学生，习惯认真完成自己的任务，并逐渐学习信任伙伴。'},
-  {id:'noa',name:'生盐诺亚',school:'千年科学学园',role:'研讨会 / 书记',initial:'诺',colors:['#e4f7ed','#9bd9bb'],bio:'记忆力出色、观察细致的研讨会书记，擅长整理信息，也喜欢观察人与人之间的互动。'},
-  {id:'mutsuki',name:'浅黄睦月',school:'格黑娜学园',role:'便利屋68 / 气氛担当',initial:'睦',colors:['#ffe5e8','#ffa7b8'],bio:'总是笑嘻嘻的便利屋成员，喜欢开玩笑和制造热闹，但也十分重视自己的伙伴。'}
+const $ = (s, root=document) => root.querySelector(s);
+const $$ = (s, root=document) => [...root.querySelectorAll(s)];
+const studentData = [
+  {id:"shiroko",name:"砂狼白子",school:"阿拜多斯",role:"输出",form:"常服",rarity:"示例资料",color:"",mark:"白",note:"阿拜多斯学生。可扩展技能、装备与养成资料。"},
+  {id:"hoshino",name:"小鸟游星野",school:"阿拜多斯",role:"坦克",form:"常服",rarity:"示例资料",color:"pink",mark:"星",note:"阿拜多斯学生。可扩展个人档案与形态列表。"},
+  {id:"nonomi",name:"十六夜野乃美",school:"阿拜多斯",role:"输出",form:"常服",rarity:"示例资料",color:"gold",mark:"乃",note:"阿拜多斯学生。可加入技能说明与培养记录。"},
+  {id:"serika",name:"黑见芹香",school:"阿拜多斯",role:"输出",form:"常服",rarity:"示例资料",color:"green",mark:"芹",note:"阿拜多斯学生。可继续扩充不同服装形态。"},
+  {id:"arisu",name:"天童爱丽丝",school:"千年",role:"输出",form:"常服",rarity:"示例资料",color:"purple",mark:"爱",note:"千年学生。可加入武器、技能与素材清单。"},
+  {id:"mika",name:"圣园未花",school:"三一",role:"输出",form:"常服",rarity:"示例资料",color:"pink",mark:"未",note:"三一学生。可添加专属资料页与收藏标签。"}
 ];
-const $ = s => document.querySelector(s);
-const grid = $('#studentGrid'), searchInput = $('#searchInput'), schoolFilter = $('#schoolFilter');
-let favorites = readStore('shiroko-favorites', []);
-let activeStudent = null;
+const schools = {
+  "阿拜多斯":{desc:"沙漠中的学园区域。可以在这里整理阿拜多斯学生、故事线索与相关资料。",color:"#e9f6ff"},
+  "千年":{desc:"以科技与研究氛围著称的学园。适合归档社团、发明与技术相关设定。",color:"#e8f8f1"},
+  "三一":{desc:"拥有独特校园文化与社团关系的学园。可逐步整理学生与剧情资料。",color:"#f3eaff"},
+  "格黑娜":{desc:"风格鲜明、社团众多的学园。可建立社团索引和人物关系资料。",color:"#fff0e8"},
+  "百鬼夜行":{desc:"具有传统文化与庆典氛围的学园区域。可扩展地点和活动档案。",color:"#fff4d9"}
+};
+const storage = {
+  get(key, fallback){try{const v=localStorage.getItem(key);return v===null?fallback:JSON.parse(v)}catch{return fallback}},
+  set(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch{}}
+};
+let saved = storage.get("kh_saved", []);
+let goals = storage.get("kh_goals", []);
+let currentPage = "home";
 let toastTimer;
-function readStore(key, fallback){ try { const v = localStorage.getItem(key); return v === null ? fallback : JSON.parse(v); } catch { return fallback; } }
-function writeStore(key, value){ try { localStorage.setItem(key, JSON.stringify(value)); } catch { showToast('浏览器未允许保存本地数据'); } }
-function safeText(value){ return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function avatarStyle(s){ return `--avatar-a:${s.colors[0]};--avatar-b:${s.colors[1]}`; }
-function visibleStudents(){ const q=searchInput.value.trim().toLowerCase(), school=schoolFilter.value; return students.filter(s => (school==='all'||s.school===school) && (!q || `${s.name} ${s.school} ${s.role}`.toLowerCase().includes(q))); }
-function renderStudents(){ const list=visibleStudents(); grid.innerHTML=list.map(s=>`<article class="student-card" data-student="${s.id}" tabindex="0" role="button" aria-label="打开${s.name}档案"><div class="avatar" style="${avatarStyle(s)}">${s.initial}</div><div class="student-info"><h3>${s.name}</h3><p>${s.role}</p><span class="student-school">${s.school}</span></div><button class="favorite-button ${favorites.includes(s.id)?'active':''}" data-favorite="${s.id}" aria-label="${favorites.includes(s.id)?'取消收藏':'收藏'}${s.name}" title="收藏">${favorites.includes(s.id)?'♥':'♡'}</button></article>`).join(''); $('#emptyState').classList.toggle('hidden',list.length!==0); $('#studentCount').textContent=String(students.length).padStart(2,'0'); }
-function renderFavorites(){ const list=students.filter(s=>favorites.includes(s.id)); $('#favoriteCount').textContent=String(list.length).padStart(2,'0'); $('#favoriteList').innerHTML=list.length?`<div class="favorite-items">${list.map(s=>`<div class="favorite-chip"><span class="mini-avatar" style="${avatarStyle(s)}">${s.initial}</span><span>${s.name}</span><button data-remove="${s.id}" aria-label="移除${s.name}" title="移除收藏">×</button></div>`).join('')}</div>`:`<div class="favorite-empty"><span>♡</span><b>还没有收藏</b><small>在学生档案卡片上点亮爱心，即可添加收藏。</small></div>`; }
-function toggleFavorite(id){ favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id]; writeStore('shiroko-favorites',favorites); renderStudents();renderFavorites(); if(activeStudent) updateModalFavorite(); const s=students.find(x=>x.id===id); showToast(favorites.includes(id)?`已收藏 ${s.name}`:`已取消收藏 ${s.name}`); }
-function openStudent(id){ const s=students.find(x=>x.id===id); if(!s)return; activeStudent=s; $('#modalInitial').textContent=s.initial; $('#modalBanner').style.background=`linear-gradient(135deg,${s.colors[0]},${s.colors[1]})`; $('#modalName').textContent=s.name; $('#modalSchool').textContent=s.school; $('#modalRole').textContent=s.role; $('#modalBio').textContent=s.bio; updateModalFavorite(); $('#studentModal').classList.remove('hidden'); document.body.style.overflow='hidden'; $('#modalClose').focus(); }
-function updateModalFavorite(){ if(!activeStudent)return; const on=favorites.includes(activeStudent.id); $('#modalFavorite').textContent=on?'♥ 已加入收藏':'♡ 加入收藏'; }
-function closeModal(){ $('#studentModal').classList.add('hidden');document.body.style.overflow='';activeStudent=null; }
-function showToast(message){ const el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2200); }
-function pickRandom(){ const list=visibleStudents();if(!list.length){showToast('当前筛选没有学生可抽选');return;} const s=list[Math.floor(Math.random()*list.length)];$('#randomResult').innerHTML=`<span class="result-avatar" style="${avatarStyle(s)}">${s.initial}</span><span><b>${s.name}</b><small>${s.school} · ${s.role}</small></span>`; }
-searchInput.addEventListener('input',renderStudents);schoolFilter.addEventListener('change',renderStudents);
-grid.addEventListener('click',e=>{const fav=e.target.closest('[data-favorite]');if(fav){e.stopPropagation();toggleFavorite(fav.dataset.favorite);return;}const card=e.target.closest('[data-student]');if(card)openStudent(card.dataset.student);});
-grid.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-student]')){e.preventDefault();openStudent(e.target.dataset.student);}});
-$('#favoriteList').addEventListener('click',e=>{const b=e.target.closest('[data-remove]');if(b)toggleFavorite(b.dataset.remove);});
-$('#randomBtn').addEventListener('click',pickRandom);$('#modalClose').addEventListener('click',closeModal);$('#modalDone').addEventListener('click',closeModal);$('#studentModal').addEventListener('click',e=>{if(e.target.dataset.close)closeModal();});$('#modalFavorite').addEventListener('click',()=>{if(activeStudent)toggleFavorite(activeStudent.id);});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();searchInput.focus();}});
-const noteInput=$('#noteInput');noteInput.value=readStore('shiroko-note','');let noteSaveTimer;noteInput.addEventListener('input',()=>{ $('#noteStatus').textContent='正在保存…';clearTimeout(noteSaveTimer);noteSaveTimer=setTimeout(()=>{writeStore('shiroko-note',noteInput.value);$('#noteStatus').textContent='已保存在当前浏览器';},350);});$('#clearNote').addEventListener('click',()=>{if(!noteInput.value)return;noteInput.value='';writeStore('shiroko-note','');$('#noteStatus').textContent='备忘录已清空';showToast('备忘录已清空');});
-const themeToggle=$('#themeToggle');function setTheme(dark){document.body.classList.toggle('dark',dark);themeToggle.textContent=dark?'☀':'☾';themeToggle.setAttribute('aria-label',dark?'切换浅色主题':'切换深色主题');try{localStorage.setItem('shiroko-theme',dark?'dark':'light');}catch{}}let savedTheme='light';try{savedTheme=localStorage.getItem('shiroko-theme')||'light';}catch{}setTheme(savedTheme==='dark');themeToggle.addEventListener('click',()=>setTheme(!document.body.classList.contains('dark')));
-const navLinks=[...document.querySelectorAll('.mobile-nav a')];navLinks.forEach(a=>a.addEventListener('click',()=>{navLinks.forEach(n=>n.classList.remove('active'));a.classList.add('active');}));
-renderStudents();renderFavorites();
+function toast(msg){const el=$("#toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),2200)}
+function go(page){
+  currentPage=page;
+  $$(".page").forEach(p=>p.classList.toggle("active",p.id===`page-${page}`));
+  $$(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
+  const active=$(`.nav-item[data-page="${page}"]`);
+  $("#pageName").textContent=active?active.textContent.trim():({home:"首页",students:"学生档案",map:"学园地图",story:"剧情档案",planner:"养成规划",collection:"我的收藏",studio:"创作空间"}[page]||"首页");
+  $(".sidebar").classList.remove("open");
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(page==="collection") renderCollection();
+}
+function studentCard(s){
+  const isSaved=saved.includes(s.id);
+  return `<article class="student-card">
+    <div class="student-top"><div class="student-avatar ${s.color}">${s.mark}</div><div><div class="student-name">${escapeHtml(s.name)}</div><div class="student-school">${escapeHtml(s.school)} · ${escapeHtml(s.form)}</div></div></div>
+    <div class="student-tags"><span class="tag">${escapeHtml(s.role)}</span><span class="tag">${escapeHtml(s.rarity)}</span><span class="tag">资料待扩充</span></div>
+    <div class="student-note">${escapeHtml(s.note)}</div>
+    <div class="student-actions"><button class="detail-button" data-detail="${s.id}">查看档案 ↗</button><button class="heart-button ${isSaved?"saved":""}" data-save="${s.id}" aria-label="收藏${escapeHtml(s.name)}">${isSaved?"♥":"♡"}</button></div>
+  </article>`;
+}
+function escapeHtml(str){return String(str).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function renderStudents(){
+  const q=$("#studentSearch").value.trim().toLowerCase();
+  const school=$("#schoolFilter").value, role=$("#roleFilter").value;
+  const list=studentData.filter(s=>(!q||`${s.name} ${s.school} ${s.role} ${s.form}`.toLowerCase().includes(q))&&(school==="全部"||s.school===school)&&(role==="全部"||s.role===role));
+  $("#studentGrid").innerHTML=list.map(studentCard).join("");
+  $("#studentEmpty").classList.toggle("hidden",list.length>0);
+}
+function renderCollection(){
+  const list=studentData.filter(s=>saved.includes(s.id));
+  $("#collectionGrid").innerHTML=list.map(studentCard).join("");
+  $("#collectionEmpty").classList.toggle("hidden",list.length>0);
+  $("#collectionGrid").classList.toggle("hidden",list.length===0);
+  updateStats();
+}
+function toggleSave(id){
+  saved=saved.includes(id)?saved.filter(x=>x!==id):[...saved,id];
+  storage.set("kh_saved",saved);
+  renderStudents();renderCollection();updateStats();
+  const s=studentData.find(x=>x.id===id);
+  toast(saved.includes(id)?`已收藏：${s?.name||"学生"}`:"已取消收藏");
+}
+function updateStats(){
+  $("#statStudents").textContent=studentData.length;
+  $("#statSaved").textContent=saved.length;
+  $("#statGoals").textContent=goals.length;
+}
+function renderGoals(){
+  $("#goalList").innerHTML=goals.map((g,i)=>`<div class="goal-item ${g.done?"done":""}"><input type="checkbox" data-goal="${i}" ${g.done?"checked":""} aria-label="完成目标"><span>${escapeHtml(g.text)}</span><button data-delete-goal="${i}" aria-label="删除目标">×</button></div>`).join("");
+  const done=goals.filter(g=>g.done).length, pct=goals.length?Math.round(done/goals.length*100):0;
+  $("#goalProgress").textContent=`${pct}%`;$("#goalProgressBar").style.width=`${pct}%`;
+  $("#goalSummary").textContent=goals.length?`已完成 ${done} / ${goals.length} 项目标。`:"还没有规划目标，添加第一项吧。";
+  updateStats();
+}
+document.addEventListener("click",e=>{
+  const nav=e.target.closest("[data-page]");if(nav){e.preventDefault();go(nav.dataset.page);return}
+  const goto=e.target.closest("[data-goto]");if(goto){go(goto.dataset.goto);return}
+  const save=e.target.closest("[data-save]");if(save){toggleSave(save.dataset.save);return}
+  const detail=e.target.closest("[data-detail]");if(detail){const s=studentData.find(x=>x.id===detail.dataset.detail);if(s)showStudentDetail(s);return}
+  const pin=e.target.closest("[data-school]");if(pin){showSchool(pin.dataset.school,pin);return}
+  const del=e.target.closest("[data-delete-goal]");if(del){goals.splice(Number(del.dataset.deleteGoal),1);storage.set("kh_goals",goals);renderGoals();toast("目标已删除");return}
+  const studio=e.target.closest("[data-studio]");if(studio){toast(`${studio.dataset.studio}：可在此基础上继续扩展`);$("#studioNote").focus();return}
+});
+function showStudentDetail(s){
+  toast(`${s.name} · ${s.school} · ${s.role}。当前为示例档案，可继续补充技能与养成信息。`);
+}
+function showSchool(name,btn){
+  $$(".map-pin").forEach(x=>x.classList.toggle("selected",x===btn));
+  const data=schools[name]||{desc:"该学园的资料将在后续版本继续补充。"};
+  $("#mapInfo").innerHTML=`<span class="pill">DISTRICT GUIDE</span><h2>${escapeHtml(name)}</h2><p>${escapeHtml(data.desc)}</p><div class="info-rule"></div><small>这里可以继续加入学园介绍、学生列表、社团索引与相关剧情。</small>`;
+}
+$("#studentSearch").addEventListener("input",renderStudents);
+$("#schoolFilter").addEventListener("change",renderStudents);
+$("#roleFilter").addEventListener("change",renderStudents);
+$("#globalSearch").addEventListener("keydown",e=>{if(e.key==="Enter"){go("students");$("#studentSearch").value=e.target.value;renderStudents()}});
+$("#globalSearch").addEventListener("input",e=>{if(e.target.value.trim().length>1){go("students");$("#studentSearch").value=e.target.value;renderStudents()}});
+$("#mobileMenu").addEventListener("click",()=>$(".sidebar").classList.toggle("open"));
+$("#profileButton").addEventListener("click",()=>go("collection"));
+$("#goalForm").addEventListener("submit",e=>{e.preventDefault();const text=$("#goalInput").value.trim();if(!text)return;goals.push({text,done:false});storage.set("kh_goals",goals);$("#goalInput").value="";renderGoals();toast("已添加养成目标")});
+$("#goalList").addEventListener("change",e=>{if(e.target.matches("[data-goal]")){goals[Number(e.target.dataset.goal)].done=e.target.checked;storage.set("kh_goals",goals);renderGoals()}});
+$("#studioNote").value=storage.get("kh_note","");
+$("#studioNote").addEventListener("input",()=>{storage.set("kh_note",$("#studioNote").value);$("#noteStatus").textContent="已自动保存到本设备"});
+$("#saveNote").addEventListener("click",()=>{storage.set("kh_note",$("#studioNote").value);$("#noteStatus").textContent="已保存";toast("创作便笺已保存")});
+document.addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$("#globalSearch").focus()}if(e.key==="Escape")$(".sidebar").classList.remove("open")});
+renderStudents();renderGoals();renderCollection();updateStats();
