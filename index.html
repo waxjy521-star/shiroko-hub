@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#eaf4ff">
+  <meta name="description" content="Shiroko Hub：蔚蓝档案学生档案、搜索、收藏与个人资料整理。">
+  <title>Shiroko Hub · 基沃托斯档案室</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient ambient-a" aria-hidden="true"></div>
+  <div class="ambient ambient-b" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="Shiroko Hub 首页">
+      <span class="brand-mark">S</span>
+      <span><strong>SHIROKO HUB</strong><small>KIVOTOS ARCHIVE</small></span>
+    </a>
+    <nav class="desktop-nav" aria-label="主导航">
+      <a class="nav-link active" href="#home" data-view="home">档案大厅</a>
+      <a class="nav-link" href="#students" data-view="students">学生图鉴</a>
+      <a class="nav-link" href="#favorites" data-view="favorites">我的收藏</a>
+      <a class="nav-link" href="#about" data-view="about">关于本站</a>
+    </nav>
+    <button id="themeToggle" class="icon-button" type="button" aria-label="切换主题" title="切换主题">☾</button>
+  </header>
+
+  <main id="home" class="page-shell">
+    <section class="hero panel">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="status-dot"></span> KIVOTOS DATABASE · BETA</div>
+        <h1>欢迎来到<br><span>基沃托斯档案室</span></h1>
+        <p>把学生、形态与资料收进同一座可探索的数字档案馆。搜索、收藏、发现下一位想了解的学生。</p>
+        <div class="hero-actions">
+          <button class="primary-button" id="exploreButton" type="button">探索学生档案 <span>↗</span></button>
+          <button class="secondary-button" id="randomButton" type="button">🎲 随机发现</button>
+        </div>
+        <div class="hero-meta"><span>✦ 本地可用</span><span>✦ 手机适配</span><span>✦ 免费开源起步</span></div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="hero-core"><span class="core-star">✦</span><span class="core-title">SCHALE</span><span class="core-sub">STUDENT ARCHIVE</span></div>
+        <span class="float-chip chip-a">STUDENT DATA</span><span class="float-chip chip-b">NO. 001</span><span class="float-chip chip-c">ONLINE</span>
+      </div>
+    </section>
+
+    <section class="stats-grid" aria-label="档案统计">
+      <article class="stat-card"><span class="stat-icon">▦</span><div><strong id="studentTotal">0</strong><small>档案条目</small></div></article>
+      <article class="stat-card"><span class="stat-icon">⌕</span><div><strong id="schoolTotal">—</strong><small>已识别学校</small></div></article>
+      <article class="stat-card"><span class="stat-icon">♡</span><div><strong id="favoriteTotal">0</strong><small>我的收藏</small></div></article>
+    </section>
+
+    <section id="students" class="archive-section">
+      <div class="section-heading">
+        <div><div class="eyebrow">STUDENT INDEX</div><h2>学生图鉴 <span class="heading-dot">.</span></h2><p>从名字开始，慢慢探索基沃托斯。</p></div>
+        <div class="view-switch" role="group" aria-label="显示模式"><button class="view-button active" id="gridViewButton" type="button" aria-label="网格视图">▦</button><button class="view-button" id="listViewButton" type="button" aria-label="列表视图">☷</button></div>
+      </div>
+      <div class="filter-panel panel">
+        <label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="搜索学生、形态或关键词…" autocomplete="off"><kbd>⌘ K</kbd></label>
+        <div class="filter-row">
+          <label class="select-wrap"><span>学校</span><select id="schoolFilter"><option value="all">全部学校</option></select></label>
+          <label class="select-wrap"><span>排序</span><select id="sortFilter"><option value="name">名称 A-Z</option><option value="newest">默认顺序</option></select></label>
+          <button class="text-button" id="clearFiltersButton" type="button">重置筛选 ↺</button>
+        </div>
+      </div>
+      <div class="results-line"><span id="resultsLabel">正在加载档案…</span><span class="data-note">资料状态以页面标注为准</span></div>
+      <div id="studentGrid" class="student-grid" aria-live="polite"></div>
+      <div id="emptyState" class="empty-state hidden"><div>⌕</div><h3>没有找到匹配的档案</h3><p>试试其他名字，或清除筛选条件。</p><button class="secondary-button" id="emptyResetButton" type="button">清除筛选</button></div>
+    </section>
+
+    <section id="favorites" class="favorites-section panel">
+      <div><div class="eyebrow">YOUR PERSONAL SPACE</div><h2>收藏夹 <span class="heading-dot">.</span></h2><p>收藏会保存在当前浏览器中，不需要注册账号。</p></div>
+      <button id="showFavoritesButton" class="secondary-button" type="button">查看我的收藏 <span>→</span></button>
+    </section>
+
+    <section id="about" class="about-section">
+      <div><div class="eyebrow">ABOUT THE ARCHIVE</div><h2>一座仍在扩建的档案馆。</h2></div>
+      <p>Shiroko Hub 是一个面向《蔚蓝档案》爱好者的综合站点起步版本。当前版本优先实现学生名称检索、形态区分、收藏与基础档案展示。未核实的技能、数值与养成材料会明确标记，不会将推测伪装成官方信息。</p>
+    </section>
+  </main>
+
+  <footer class="footer"><a class="footer-brand" href="#home">SHIROKO HUB</a><span>Fan-made archive · 非官方粉丝项目</span><span>Made for Kivotos ✦</span></footer>
+  <nav class="mobile-nav" aria-label="移动端导航"><a href="#home" class="mobile-nav-link active" data-view="home"><span>⌂</span>首页</a><a href="#students" class="mobile-nav-link" data-view="students"><span>▦</span>图鉴</a><a href="#favorites" class="mobile-nav-link" data-view="favorites"><span>♡</span>收藏</a><a href="#about" class="mobile-nav-link" data-view="about"><span>ⓘ</span>关于</a></nav>
+
+  <dialog id="studentDialog" class="student-dialog"><button class="dialog-close" id="dialogClose" type="button" aria-label="关闭">×</button><div id="dialogContent"></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="student-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
